@@ -1,0 +1,14 @@
+{
+
+    "parserOptions": {
+         "ecmaVersion": 2017,
+         "sourceType": "module",
+         "ecmaFeatures": {
+             "ecmaVersion": 8,
+             "jsx": true,
+              "parser": "babel-eslint",
+             "experimentalObjectRestSpread": true
+         }
+    }
+}
+

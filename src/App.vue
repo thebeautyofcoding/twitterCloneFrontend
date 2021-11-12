@@ -1,9 +1,14 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="wrapper">
+    <div class="row flex w-full">
+      <div class="flex w-full">
+        <div class="flex mr-3 col-md-1"><Sidebar /></div>
+        <div class="col-md-6 m-auto">
+          <router-view></router-view>
+        </div>
+      </div>
+    </div>
   </div>
-  <router-view/>
 </template>
 
 <style lang="scss">
@@ -28,3 +33,19 @@
   }
 }
 </style>
+<script>
+  import { mapState } from "vuex";
+  import Sidebar from "./components/Sidebar";
+
+  export default {
+    data() {
+      return {
+        loggedInUser: null
+      };
+    },
+    components: { Sidebar },
+    ...mapState({
+      loggedInUser: () => state.currentUser.currentUser
+    })
+  };
+</script>
