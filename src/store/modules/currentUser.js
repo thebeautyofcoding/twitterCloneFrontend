@@ -21,7 +21,7 @@ const mutations =
 const actions = {
   loginUser ({ commit }, user) {
     console.log(process.env.VUE_APP_API_ENDPOINT)
-    axios.post('https://twitter-clone-laravel-api.herokuapp.com/api/login', {
+    axios.post(`${process.env.VUE_APP_API_ENDPOINT}/login`, {
       email: user.email,
       password: user.password
     }).then(response => {
@@ -39,7 +39,7 @@ const actions = {
 
   logout ({ commit }, token) {
     return new Promise((resolve, reject) => {
-      axios.post('http://127.0.0.1:8000/api/logout', {
+      axios.post(`${process.env.VUE_APP_API_ENDPOINT}/logout`, {
 
       }, {
         headers: {
@@ -59,7 +59,7 @@ const actions = {
   },
   registerUser ({ commit }, user) {
     return new Promise((resolve, reject) => {
-      axios.post('http://127.0.0.1:8000/api/register', {
+      axios.post(`${process.env.VUE_APP_API_ENDPOINT}/register`, {
         email: user.email,
         password: user.password,
         username: user.username,
