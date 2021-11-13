@@ -33,16 +33,16 @@ const getters = {
 
 const mutations = {
 
-  setLoggedInUser(state, user) {
+  setLoggedInUser (state, user) {
     console.log(user)
     state.loggedInUser = user.currentUser
   },
-  setPost(state, post) {
+  setPost (state, post) {
     return state.post = post
 
 
   },
-  setPosts(state, posts) {
+  setPosts (state, posts) {
 
 
     return state.posts = posts
@@ -50,11 +50,11 @@ const mutations = {
 
 
   },
-  setPostToPosts(state, post) {
+  setPostToPosts (state, post) {
 
     return state.posts.unshift(post)
   },
-  setRepliedToPosts(state, postId) {
+  setRepliedToPosts (state, postId) {
 
     state.posts = [...state.posts.map(post => {
       return post.id === postId ? { ...post, replied: true } : post
@@ -63,7 +63,7 @@ const mutations = {
 
 
   },
-  setRepliedToPost(state, post) {
+  setRepliedToPost (state, post) {
 
     state.post = { ...post, replied: true }
 
@@ -72,7 +72,7 @@ const mutations = {
   },
 
 
-  setLikedToPosts(state, data) {
+  setLikedToPosts (state, data) {
     console.log(data.post)
     return state.posts = [...state.posts.map(post => {
 
@@ -111,7 +111,7 @@ const mutations = {
 
     })]
   },
-  setLikedToPost(state, data) {
+  setLikedToPost (state, data) {
     console.log(data.post)
     return state.posts = [...state.posts.map(post => {
 
@@ -161,7 +161,7 @@ const mutations = {
 
 
   // },
-  updatePost(state, data) {
+  updatePost (state, data) {
 
     console.log(data)
 
@@ -170,7 +170,7 @@ const mutations = {
     return state.post = data.post
 
   },
-  updateReplyToPost(state, data) {
+  updateReplyToPost (state, data) {
 
     var post_to_reply_for = data.postReply
 
@@ -183,7 +183,7 @@ const mutations = {
       return post.id === data ? { ...post, post_to_reply_for } : post
     })]
   },
-  updateRepliesToPost(state, data) {
+  updateRepliesToPost (state, data) {
     console.log(data)
 
 
@@ -196,7 +196,7 @@ const mutations = {
 
     })]
   },
-  updateRepliesToPosts(state, data) {
+  updateRepliesToPosts (state, data) {
 
     state.posts = [...state.posts.map(function (post) {
 
@@ -215,7 +215,7 @@ const mutations = {
   //   })
   // },
 
-  updatePosts(state, data) {
+  updatePosts (state, data) {
 
     console.log(data)
     return state.posts = [...state.posts.map((post) => {
@@ -234,12 +234,12 @@ const mutations = {
 /* eslint-disable */
 const actions = {
 
-  updatePostsViaEvent({ commit }, post) {
+  updatePostsViaEvent ({ commit }, post) {
 
     console.log(post)
     commit('setPostToPosts', post.post)
   },
-  updatePostViaEvent({ commit }, post) {
+  updatePostViaEvent ({ commit }, post) {
 
     console.log(post)
     commit('updatePosts', post)
@@ -247,10 +247,10 @@ const actions = {
 
 
 
-  async getProfileUser({ commit }, username) {
+  async getProfileUser ({ commit }, username) {
 
 
-    const response = await axios(`http://127.0.0.1:8000/api/profile/${username}`,
+    const response = await axios(`${process.env.VUE_APP_API_ENDPOINT}/profile/${username}`,
       {
         headers: {
           Authorization: 'Bearer ' + token
@@ -259,16 +259,16 @@ const actions = {
     return response.data.user
   },
 
-  setLoggedInUserAction({ commit, getters }) {
+  setLoggedInUserAction ({ commit, getters }) {
 
     var user = getters.loggedInUser
     console.log(user)
 
     commit('setLoggedInUser', user)
   },
-  async getPosts({ commit }) {
+  async getPosts ({ commit }) {
 
-    const response = await axios('http://127.0.0.1:8000/api/posts',
+    const response = await axios(`${process.env.VUE_APP_API_ENDPOINT}/posts`,
       {
         headers: {
           Authorization: 'Bearer ' + token,
@@ -281,10 +281,10 @@ const actions = {
 
 
   },
-  likePost({ commit }, postId) {
+  likePost ({ commit }, postId) {
 
     return new Promise((resolve, reject) => {
-      axios.post('http://127.0.0.1:8000/api/posts/like', { postId: postId }, {
+      axios.post(`${process.env.VUE_APP_API_ENDPOINT}/posts/like`, { postId: postId }, {
         headers: {
           Authorization: 'Bearer ' + token
         }
@@ -310,9 +310,9 @@ const actions = {
     })
   },
 
-  getPostsByUsername({ commit }) {
+  getPostsByUsername ({ commit }) {
     return new Promise((resolve, reject) => {
-      axios.get(`http://127.0.0.1:8000/api/profile/posts/bluemotion86`, {
+      axios.get(`${process.env.VUE_APP_API_ENDPOINT}/profile/posts/bluemotion86`, {
         headers: {
           Authorization: 'Bearer ' + token
         }
@@ -331,13 +331,13 @@ const actions = {
       }).catch(err => reject(err))
     })
   },
-  retweetPostByEvent({ commit }, data) {
+  retweetPostByEvent ({ commit }, data) {
     commit('updatePosts', data)
     commit('setPost', data.post)
   },
-  retweetPost({ commit }, postId) {
+  retweetPost ({ commit }, postId) {
     return new Promise((resolve, reject) => {
-      axios.post('http://127.0.0.1:8000/api/posts/retweet', { postId: postId }, {
+      axios.post(`${process.env.VUE_APP_API_ENDPOINT}/posts/retweet`, { postId: postId }, {
         headers: {
           Authorization: 'Bearer ' + token
         }
@@ -356,10 +356,10 @@ const actions = {
       }).catch(err => reject(err))
     })
   },
-  getPostByIdAction({ commit }, postId) {
+  getPostByIdAction ({ commit }, postId) {
 
     return new Promise((resolve, reject) => {
-      axios.get(`http://127.0.0.1:8000/api/posts/${postId}`, {
+      axios.get(`${process.env.VUE_APP_API_ENDPOINT}/posts/${postId}`, {
         headers: {
           Authorization: 'Bearer ' + token
         }
@@ -377,9 +377,9 @@ const actions = {
     // commit('updateReplyToPost', data)
   },
 
-  replyToPost({ commit }, reply) {
+  replyToPost ({ commit }, reply) {
     return new Promise((resolve, reject) => {
-      axios.post('http://127.0.0.1:8000/api/posts/reply', { reply: reply }, {
+      axios.post(`${process.env.VUE_APP_API_ENDPOINT}/posts/reply`, { reply: reply }, {
         headers: {
           Authorization: 'Bearer ' + token
         }
@@ -396,9 +396,9 @@ const actions = {
       }).catch(err => reject(err))
     })
   },
-  async getRepliesOfPost({ commit }, postId) {
+  async getRepliesOfPost ({ commit }, postId) {
 
-    var response = await axios.get(`http://127.0.0.1:8000/api/posts/replies/${postId}`, {
+    var response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/posts/replies/${postId}`, {
       headers: {
         Authorization: 'Bearer ' + token
       }
@@ -413,14 +413,14 @@ const actions = {
 
 
   },
-  addPostToPosts({ commit }, value) {
+  addPostToPosts ({ commit }, value) {
     var token = localStorage.getItem("token")
     var user = localStorage.getItem(('user'))
     user = JSON.parse(user)
 
     axios
       .post(
-        `http://127.0.0.1:8000/api/create/posts/${user.id}`,
+        `${process.env.VUE_APP_API_ENDPOINT}/create/posts/${user.id}`,
         { content: value },
         {
           headers: {
@@ -435,9 +435,9 @@ const actions = {
       })
   },
 
-  getPostsWithAllReplies({ commit }) {
+  getPostsWithAllReplies ({ commit }) {
     return new Promise((resolve, reject) => {
-      axios.get(`http://127.0.0.1:8000/api/posts`, {
+      axios.get(`${process.env.VUE_APP_API_ENDPOINT}/posts`, {
         headers: {
           Authorization: 'Bearer ' + token
         }
@@ -452,7 +452,7 @@ const actions = {
     })
 
   },
-  setRepliedOnPostAction({ commit }, post) {
+  setRepliedOnPostAction ({ commit }, post) {
 
     commit('setRepliedToPost', post)
     commit('setRepliedToPosts', post.id)

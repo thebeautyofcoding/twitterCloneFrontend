@@ -16,12 +16,12 @@ const mutations = {
 
 
 const actions = {
-  async uploadProfileAvatar({ commit }, avatarImage) {
+  async uploadProfileAvatar ({ commit }, avatarImage) {
 
-    const formData = new FormData();
-    formData.append("image", avatarImage);
+    const formData = new FormData()
+    formData.append("image", avatarImage)
     console.log(formData)
-    var response = await axios.post(`http://127.0.0.1:8000/api/profile/avatar/${loggedInUser.id}`, formData, {
+    var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/profile/avatar/${loggedInUser.id}`, formData, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': avatarImage.type
@@ -31,7 +31,7 @@ const actions = {
     })
     const urlCreator = window.URL || window.webkitURL
     var logo = urlCreator.createObjectURL(response.data)
-    return response, logo;
+    return response, logo
   }
 }
 
