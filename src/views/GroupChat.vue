@@ -17,8 +17,7 @@
             >
               <div class="absolute w-full">
                 <img
-                  :src="`${process.env.VUE_APP_API_ENDPOINT}/profile/avatar/
-                    ${user.id}`"
+                  :src="endPoint + '/profile/avatar/' + user.id"
                   class="h-10 w-10 rounded-full border-4 border-white"
                 />
               </div>
@@ -73,9 +72,7 @@
                 <div v-if="lastMessage.id === message.id">
                   <img
                     class="rounded-full h-8 w-8 mr-2"
-                    :src="`${process.env.VUE_APP_API_ENDPOINT}/
-
-                     ${lastMessage.sender.id}`"
+                    :src="endPoint + '/' + lastMessage.sender.id"
                   />
                 </div>
 
@@ -183,6 +180,9 @@
 
       channel() {
         return window.Echo.channel("chat" + this.$route.params.id);
+      },
+      endPoint() {
+        return process.env.VUE_APP_API_ENDPOINT;
       }
 
       // leavingChannel() {
