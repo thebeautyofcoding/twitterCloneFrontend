@@ -58,6 +58,7 @@ const actions = {
     })
   },
   registerUser ({ commit }, user) {
+
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_API_ENDPOINT}/register`, {
         email: user.email,
