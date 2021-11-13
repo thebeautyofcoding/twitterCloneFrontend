@@ -171,7 +171,7 @@
       },
 
       imageAdress: function(id) {
-        return `http://127.0.0.1:8000/api/profile/avatar/${id}`;
+        return `${process.env.VUE_APP_API_ENDPOINT}/profile/avatar/${id}`;
       }
     }
   };

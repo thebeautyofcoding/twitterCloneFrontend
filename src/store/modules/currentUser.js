@@ -25,7 +25,7 @@ const actions = {
       email: user.email,
       password: user.password
     }).then(response => {
-
+      localStorage.setItem('user', response.data.user)
       commit('setCurrentUser', response.data.user)
 
       if (response.data.token) {
