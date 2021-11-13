@@ -17,7 +17,11 @@
             >
               <div class="absolute w-full">
                 <img
-                  :src="'http://127.0.0.1:8000/api/profile/avatar/' + user.id"
+                  :src="
+                    process.env.VUE_APP_API_ENDPOINT +
+                    '/profile/avatar/' +
+                    user.id
+                  "
                   class="h-10 w-10 rounded-full border-4 border-white"
                 />
               </div>
@@ -73,7 +77,8 @@
                   <img
                     class="rounded-full h-8 w-8 mr-2"
                     :src="
-                      'http://127.0.0.1:8000/api/profile/avatar/' +
+                      process.env.VUE_APP_API_ENDPOINT +
+                      '/' +
                       lastMessage.sender.id
                     "
                   />

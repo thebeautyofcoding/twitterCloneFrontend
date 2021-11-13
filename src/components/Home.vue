@@ -163,7 +163,7 @@
       postDeleteHandler: function(id) {
         console.log(id);
         axios
-          .delete(`http://127.0.0.1:8000/api/delete/posts/${id}`, {
+          .delete(`${process.env.VUE_APP_API_ENDPOINT}/delete/posts/${id}`, {
             content: this.value
           })
           .then(response => {
