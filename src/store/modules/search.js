@@ -69,7 +69,7 @@ const actions = {
     console.log(value)
 
     console.log(token)
-    var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/search/users/`, { value: value }, {
+    var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/search/users`, { value: value }, {
       headers: {
         Authorization: 'Bearer ' + token,
 
@@ -87,7 +87,7 @@ const actions = {
   async searchPosts ({ commit }, value) {
 
 
-    var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/search/posts/`, { value: value }, {
+    var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/search/posts`, { value: value }, {
       headers: {
         Authorization: 'Bearer ' + token,
 

@@ -95,7 +95,7 @@ const actions = {
     commit('deleteOneConversationPartner', partner)
   },
   async createChat ({ commit }, chatUsers) {
-    var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/messages/new/`, { chatUsers: chatUsers }, {
+    var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/messages/new`, { chatUsers: chatUsers }, {
       headers: {
         Authorization: 'Bearer ' + token,
 
@@ -110,7 +110,7 @@ const actions = {
 
   async getChats ({ commit }) {
 
-    var response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/messages/`, {
+    var response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/messages`, {
       headers: {
         Authorization: 'Bearer ' + token,
 
@@ -138,7 +138,7 @@ const actions = {
   async sendMessage ({ commit }, data) {
     window.apiClient.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId()
 
-    var response = await window.apiClient.post(`${process.env.VUE_APP_API_ENDPOINT}/messages/`, data, {
+    var response = await window.apiClient.post(`${process.env.VUE_APP_API_ENDPOINT}/messages`, data, {
       headers: {
         Authorization: 'Bearer ' + token,
 
@@ -157,7 +157,7 @@ const actions = {
   async sendPrivateMessage ({ commit }, data) {
     window.apiClient.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId()
 
-    var response = await window.apiClient.post(`${process.env.VUE_APP_API_ENDPOINT}/private-messages/`, data, {
+    var response = await window.apiClient.post(`${process.env.VUE_APP_API_ENDPOINT}/private-messages`, data, {
       headers: {
         Authorization: 'Bearer ' + token,
 
