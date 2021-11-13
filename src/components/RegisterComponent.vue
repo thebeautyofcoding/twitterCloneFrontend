@@ -1,6 +1,6 @@
 <template>
   <div class="w-full container">
-    <div class="form-group m-auto">
+    <div class="form-group">
       <label for="email">Email</label>
       <input
         type="email"

@@ -20,7 +20,7 @@ import 'vue-toast-notification/dist/theme-sugar.css'
 window.Pusher = require('pusher-js')
 import axios from 'axios'
 window.apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
+  baseURL: `${process.env.VUE_APP_API_ENDPOINT}/`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ window.Echo = new Echo({
   key: "d4a3dfa359b90a39e1ed",
   broadcaster: 'pusher',
 
-  authEndpoint: "http://127.0.0.1:8000/api/broadcasting/auth",
+  authEndpoint: `${process.env.VUE_APP_API_ENDPOINT}/broadcasting/auth`,
   forceTLS: true,
   enycrypted: false,
   cluster: 'eu', transports: ['websocket', 'polling', 'flashsocket'],
