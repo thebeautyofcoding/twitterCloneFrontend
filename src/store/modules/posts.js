@@ -5,7 +5,8 @@ var state = {
   posts: [],
   post: {},
   loggedInUser: {},
-  posts: []
+  posts: [],
+  replies: []
 
 }
 const token = localStorage.getItem('token')
@@ -221,10 +222,24 @@ const mutations = {
     return state.posts = [...state.posts.map((post) => {
 
 
-      return post.id === data.post.id ? data.post : post
+      return post.id === data.id ? data : post
     })]
 
   },
+
+  updateReplies (state, data) {
+
+    console.log(data)
+    return state.replies = [...state.replies.map((post) => {
+
+
+      return post.id === data.id ? data : post
+    })]
+
+  },
+  setReplies (state, replies) {
+    state.replies = replies
+  }
 
   // prepopulateModal() {
 
@@ -293,9 +308,9 @@ const actions = {
 
           // commit('setLikedToPost', data)
 
-
+          console.log(data.post)
           commit('setPost', data.post)
-          commit('updatePosts', data)
+          commit('updatePosts', data.post)
           // commit('setPosts', data.post)
 
 
@@ -343,12 +358,14 @@ const actions = {
         }
       }).then(({ data, status }) => {
         if (status === 201) {
-          commit('updatePosts', data)
+          commit('updatePosts', data.post)
+          commit('updatePost', data.post)
           commit('setPost', data.post)
           resolve(data.post)
         } else {
-          commit('updatePosts', data)
+          commit('updatePosts', data.post)
           commit('setPost', data.post)
+          commit('updatePost', data.post)
 
           resolve(data.post)
 
@@ -457,6 +474,18 @@ const actions = {
     commit('setRepliedToPost', post)
     commit('setRepliedToPosts', post.id)
 
+  },
+
+  async getReplies ({ commit }, username) {
+    const res = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/replies/${username}`, {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+    // commit('setReplies', res.data.replies)
+    // commit('updatePosts', res.data.replies)
+    commit('setPosts', res.data.replies)
+    return res
   }
 }
 export default {

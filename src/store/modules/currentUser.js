@@ -70,7 +70,14 @@ const actions = {
           'Content-Type': 'application/json'
         }
       }).then(({ data, status }) => {
-        if (status === 200) {
+
+        if (status === 201) {
+          console.log(data.user)
+          localStorage.setItem('token', data.token)
+          const userStringified = JSON.stringify(data.user)
+          localStorage.setItem('user', userStringified)
+
+          commit('setCurrentUser', data.user)
           resolve(true)
         }
       })

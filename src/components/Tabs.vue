@@ -61,7 +61,8 @@
         activeTextTag: " font-bold text-black ",
         nonActiveTextTag: " font-bold text-gray-400 ",
         activePostsTab: false,
-        following: null
+        following: null,
+        replies: []
 
         // posts: [],
         // postsOfProfile: []
@@ -79,6 +80,7 @@
     },
     methods: {
       async onClick(title) {
+        var username = this.$route.params.username;
         this.selectedTitle = title;
         console.log(this.selectedTitle);
         if (this.selectedTitle === "Posts") {
@@ -92,7 +94,6 @@
 
         if (this.selectedTitle === "Following") {
           this.$emit("following-tab-active", true);
-          var username = this.$route.params.username;
 
           await this.$store.dispatch("getFollowing", username);
           console.log(this.following);
@@ -100,6 +101,8 @@
           this.$emit("follower-tab-active", true);
           var username = this.$route.params.username;
           await this.$store.dispatch("getFollowers", username);
+        } else if (this.selectedTitle === "Replies") {
+          await this.$store.dispatch("getReplies", username);
         } else {
           this.$emit("following-tab-active", false);
         }

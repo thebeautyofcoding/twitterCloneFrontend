@@ -51,7 +51,7 @@
     <div v-if="active" class="modal-backdrop fade show"></div>
 
     <div
-      class="flex flex-col border-r-2 border-gray-200 w-full"
+      class="flex flex-col border-r-2 border-gray-200 w-full border-l-2"
       style="margin: 0; padding: 0"
     >
       <div class="h-20 border-b-2 border-gray-600 w-full">
@@ -170,7 +170,7 @@
       </div>
       <PostReplyModal />
       <div v-if="isLoggedInUsersProfile">
-        <div class="flex justify-end">
+        <div class="flex justify-end mr-4">
           <router-link
             to="/messages/"
             class="
@@ -192,7 +192,7 @@
 
       <Tabs>
         <Tab title="Posts"> <SinglePostList /></Tab>
-        <Tab title="Replies"></Tab>
+        <Tab title="Replies"><SinglePostRepliesList /></Tab>
       </Tabs>
     </div>
   </div>
@@ -205,9 +205,17 @@
   import SinglePostList from "../components/SinglePostList.vue";
   import PostReplyModal from "../components/PostReplyModal.vue";
   import ImageCropper from "../components/ImageCropper.vue";
+  import SinglePostRepliesList from "../components/SinglePostRepliesList";
   export default {
     name: "Profile",
-    components: { Tab, Tabs, SinglePostList, PostReplyModal, ImageCropper },
+    components: {
+      Tab,
+      Tabs,
+      SinglePostList,
+      PostReplyModal,
+      ImageCropper,
+      SinglePostRepliesList
+    },
     data() {
       return {
         loggedInUser: {},
@@ -220,21 +228,29 @@
         myProfile: false
       };
     },
-    computed: {},
+    computed: {
+      isLoggedInUsersProfile() {
+        console.log(this.loggedInUser);
+        return (
+          this.$route.params.username ===
+          this.$store.state.currentUser.currentUser.username
+        );
+      }
+    },
 
     async mounted() {
-      this.loggedInUser = localStorage.getItem("user");
-      this.loggedInUser = JSON.parse(this.loggedInUser);
+      // this.loggedInUser = localStorage.getItem("user");
+      // this.loggedInUser = JSON.parse(this.loggedInUser);
 
       this.profileUser = await this.$store.dispatch(
         "getProfileUser",
         this.$route.params.username
       );
-      if (this.$route.params.username == this.loggedInUser.username) {
-        this.isLoggedInUsersProfile = true;
-      } else {
-        this.isLoggedInUsersProfile = false;
-      }
+      // if (this.$route.params.username == this.loggedInUser.username) {
+      //   this.isLoggedInUsersProfile = true;
+      // } else {
+      //   this.isLoggedInUsersProfile = false;
+      // }
     },
 
     methods: {
@@ -263,8 +279,6 @@
         console.log(response);
         this.avatar = response;
       }
-    },
-
-    computed: function() {}
+    }
   };
 </script>

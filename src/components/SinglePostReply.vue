@@ -131,20 +131,13 @@
     },
     computed: {
       channel() {
-        return window.Echo.private(
-          "likes" + this.post.post &&
-            this.post.post.user_id_posted_by &&
-            this.post.post.user_id_posted_by.id
-            ? this.post.post.user_id_posted_by.id
-            : this.post.user_id_posted_by && this.post.user_id_posted_by.id
-        );
+        return window.Echo.private("likes" + this.post.user_id_posted_by.id);
       },
       retweets() {
         return window.Echo.private("posts");
       }
     },
-    created() {
-      console.log(this.post.user_id_posted_by.id);
+    mounted() {
       this.channel.listen("LikeEvent", e => {
         console.log("LIKEEVENT gets called multiple times");
         console.log(e);

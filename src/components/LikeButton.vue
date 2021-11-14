@@ -30,11 +30,7 @@
               ? 'text-red-600 flex hover:text-red-400'
               : 'text-gray-600 flex hover:text-red-400'
           "
-          >{{
-            post.post_likes_post && post.post_likes_post.length
-              ? post.post_likes_post.length
-              : "0"
-          }}</span
+          >{{ post.post_likes_post.length }}</span
         >
       </div>
     </div>

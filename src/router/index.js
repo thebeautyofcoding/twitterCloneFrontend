@@ -79,7 +79,7 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
   console.log(store.state.currentUser.currentUser)
-  if (to.name !== 'Login' && to.name !== 'Register' && store.state.currentUser.currentUser && !store.state.currentUser.currentUser.id || store.state.currentUser.currentUser && store.state.currentUser.currentUser.user && store.state.currentUser.currentUser.user.id) next('/login')
+  if (to.name !== 'Login' && to.name !== 'Register' && !store.state.currentUser.currentUser || store.state.currentUser.currentUser && store.state.currentUser.currentUser.user && store.state.currentUser.currentUser.user.id) next('/login')
   else next()
 })
 

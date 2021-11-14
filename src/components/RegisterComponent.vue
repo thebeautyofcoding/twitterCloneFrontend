@@ -90,7 +90,7 @@
         console.log(this.user);
         this.$store
           .dispatch("registerUser", this.user)
-          .then(success => console.log(success))
+          .then(success => this.$router.push("/"))
           .catch(err => console.log(err));
       }
     }
