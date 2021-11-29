@@ -32,6 +32,16 @@ const getters = {
 }
 
 const mutations = {
+  updateSearchPosts (state, data) {
+
+    console.log(data)
+    return state.postsResults = [...state.postsResults.map((post) => {
+
+
+      return post.id === data.id ? data : post
+    })]
+
+  },
   setSearchQuery (state, query) {
     state.searchQuery = query
   },
@@ -104,7 +114,8 @@ const actions = {
 
   setUsersResults ({ commit }, users) {
     commit('setUsersResults', users)
-  }
+  },
+
 }
 
 

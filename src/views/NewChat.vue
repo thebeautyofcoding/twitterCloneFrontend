@@ -83,23 +83,29 @@
 </template>
 
 <script>
+  import { defineComponent, h } from "vue";
   import SearchBar from "../components/SearchBar.vue";
   import UserResultsList from "../components/UserResultsList.vue";
+  import { ElNotification } from "element-plus";
+
   export default {
     name: "NewChat",
     components: {
       SearchBar,
-      UserResultsList
+      UserResultsList,
     },
     data() {
       return {
-        noValue: false
+        noValue: false,
       };
     },
     computed: {
       partners() {
         return this.$store.state.chat.conversationPartners;
-      }
+      },
+      error() {
+        return this.$store.state.chat.error;
+      },
     },
     methods: {
       onNoValue(e) {
@@ -108,10 +114,18 @@
       onClickPartner(partner) {
         this.$store.dispatch("deleteOneConversationPartner", partner);
       },
-      onCreateChat(partners) {
-        this.$store.dispatch("createChat", partners);
-      }
-    }
+      async onCreateChat(partners) {
+        await this.$store.dispatch("createChat", partners);
+        if (this.error !== "") {
+          console.log(this.error);
+          ElNotification({
+            title: "Error",
+            message: h("i", { style: "color: teal" }, this.error),
+          });
+        }
+      },
+    },
+    mounted() {},
   };
 </script>
 

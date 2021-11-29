@@ -30,7 +30,7 @@
               ? 'text-red-600 flex hover:text-red-400'
               : 'text-gray-600 flex hover:text-red-400'
           "
-          >{{ post.post_likes_post.length }}</span
+          >{{ post.post_like_count }}</span
         >
       </div>
     </div>
@@ -47,15 +47,15 @@
     props: {
       id: Number,
       post: Object,
-      likeHandler: Function
+      likeHandler: Function,
     },
     components: {
-      SvgIcon
+      SvgIcon,
     },
     computed: {
       channel() {
         return window.Echo.private("likes" + this.post.user_id_posted_by.id);
-      }
+      },
     },
     data() {
       return {
@@ -63,7 +63,7 @@
 
         loggedInUser: {},
         postModal: {},
-        loggedInUser: {}
+        loggedInUser: {},
       };
     },
 
@@ -74,7 +74,7 @@
       this.loggedInUser = JSON.parse(this.loggedInUser);
     },
 
-    created() {}
+    created() {},
   };
 </script>
 

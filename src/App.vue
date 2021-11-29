@@ -2,8 +2,8 @@
   <div class="wrapper">
     <div class="row flex w-full">
       <div class="flex w-full">
-        <div class="flex mr-3 col-md-1"><Sidebar /></div>
-        <div class="col-md-6 mx-auto">
+        <div class="flex mr-3 col-lg-4 col-md-3 col-sm-3"><Sidebar /></div>
+        <div class="col-md-7">
           <router-view></router-view>
         </div>
       </div>
@@ -40,12 +40,12 @@
   export default {
     data() {
       return {
-        loggedInUser: null
+        loggedInUser: null,
       };
     },
     components: { Sidebar },
     ...mapState({
-      loggedInUser: () => state.currentUser.currentUser
-    })
+      loggedInUser: () => state.currentUser.currentUser,
+    }),
   };
 </script>

@@ -11,7 +11,10 @@ const state = {
   conversationPartners: [],
   messages: [],
   chat: {},
-  setValueEmpty: false
+  setValueEmpty: false,
+  chats: [],
+  error: '',
+  privateChat: {}
 }
 
 const getters = {
@@ -20,6 +23,21 @@ const getters = {
 
 
 const mutations = {
+  addPrivateMessageToChat (state, message) {
+    state.privateChat.messages = message
+  },
+
+  setConversationPartners (state, partners) {
+
+    state.conversationPartners = partners
+  },
+  setError (state, error) {
+    console.log(error)
+    state.error = error
+  },
+  setChats (state, chats) {
+    state.chats = chats
+  },
 
   setValueEmpty (state, setValueEmpty) {
     if (setValueEmpty === true) {
@@ -52,9 +70,7 @@ const mutations = {
     state.chat.messages.push(message)
 
   },
-  setConversationPartners (state, partners) {
-    state.conversationPartners = partners
-  },
+
   deleteOneConversationPartner (state, user) {
     console.log(user)
     const i = state.conversationPartners.findIndex((partner) => partner.id === user.id)
@@ -88,6 +104,7 @@ const actions = {
     commit('addMessage', message)
   },
   setConversationPartners ({ commit }, partners) {
+    console.log(partners)
     commit('setConversationPartners', partners)
   },
   deleteOneConversationPartner ({ commit }, partner) {
@@ -104,7 +121,19 @@ const actions = {
 
     })
 
-    return response
+    commit('setConversationPartners', [])
+    if (response.data.error) {
+
+      console.log(response.data.error)
+
+      return commit('setError', response.data.error)
+
+    } else {
+
+
+      ; return response
+    }
+
   },
 
 
@@ -118,6 +147,8 @@ const actions = {
       },
 
     })
+    console.log(response.data.chatsWithUsers)
+    commit('setChats', response.data.chatsWithUsers)
     return response.data.chatsWithUsers
   },
 
@@ -150,7 +181,7 @@ const actions = {
       },
 
     })
-    // commit('addMessage', response.data.message)
+    commit('addMessage', response.data.message)
     return response.data.message
   },
 
@@ -169,7 +200,7 @@ const actions = {
       },
 
     })
-    // commit('addMessage', response.data.message)
+    commit('addPrivateMessageToChat', response.data.message)
     return response.data.message
   }
 

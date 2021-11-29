@@ -1,5 +1,6 @@
 
 import axios from 'axios'
+
 const state = {
   currentUser: JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : null
 }
@@ -19,22 +20,28 @@ const mutations =
 {
 }
 const actions = {
-  loginUser ({ commit }, user) {
+  async loginUser ({ commit }, user) {
     console.log(process.env.VUE_APP_API_ENDPOINT)
-    axios.post(`${process.env.VUE_APP_API_ENDPOINT}/login`, {
+
+
+    const response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/login`, {
       email: user.email,
       password: user.password
-    }).then(response => {
+    })
+
+
+    if (response.data.token) {
       localStorage.setItem('user', response.data.user)
       commit('setCurrentUser', response.data.user)
+      localStorage.setItem('token', response.data.token)
+      const userStringified = JSON.stringify(response.data.user)
+      localStorage.setItem('user', userStringified)
+    }
 
-      if (response.data.token) {
+    return response
 
-        localStorage.setItem('token', response.data.token)
-        const userStringified = JSON.stringify(response.data.user)
-        localStorage.setItem('user', userStringified)
-      }
-    })
+
+
   },
 
   logout ({ commit }, token) {
@@ -64,7 +71,10 @@ const actions = {
         email: user.email,
         password: user.password,
         username: user.username,
-        password_confirmation: user.passwordConfirm
+        password_confirmation: user.passwordConfirm,
+        firstname: user.firstname,
+        lastname: user.lastname,
+
       }, {
         headers: {
           'Content-Type': 'application/json'

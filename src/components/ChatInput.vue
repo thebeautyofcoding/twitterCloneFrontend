@@ -54,7 +54,7 @@
         loggedInUser: {},
         typing: "",
         time: [],
-        setValueEmpty: false
+        setValueEmpty: false,
       };
     },
     props: [],
@@ -74,9 +74,9 @@
     watch: {
       message() {
         this.channel.whisper("typing", {
-          name: this.value
+          name: this.value,
         });
-      }
+      },
     },
     methods: {
       // isTyping() {
@@ -107,14 +107,14 @@
       getTime() {
         let time = new Date();
         return time.getHours() + ":" + time.getMinutes();
-      }
+      },
     },
 
     created() {},
     computed: {
       channel() {
         return window.Echo.join(`joinedUsers${this.$store.state.chat.chat.id}`);
-      }
+      },
     },
     created() {
       var loggedInUser = localStorage.getItem("user");
@@ -123,7 +123,8 @@
         // .listen("TypeEvent", e => {
         //   console.log(e);
         // })
-        .listenForWhisper("typing", e => {
+        .listenForWhisper("typing", (e) => {
+          console.log("TYPING!!!!!");
           console.log(e);
           this.typing = "typing...";
           console.log(this.typing);
@@ -149,12 +150,12 @@
       this.channel.listen(
         "MessageSentEvent",
 
-        e => (this.value = "")
+        (e) => (this.value = "")
       );
     },
     beforeUnmount() {
       window.removeEventListener("unload", this.someMethod);
-    }
+    },
   };
 </script>
 

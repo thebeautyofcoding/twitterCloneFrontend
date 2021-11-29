@@ -12,11 +12,11 @@ import Echo from "laravel-echo"
 import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
 
 var token = localStorage.getItem('token')
-import 'animate.css'
-import VueToast from 'vue-toast-notification'
+
+
 // Import one of the available themes
 //import 'vue-toast-notification/dist/theme-default.css';
-import 'vue-toast-notification/dist/theme-sugar.css'
+
 window.Pusher = require('pusher-js')
 import axios from 'axios'
 window.apiClient = axios.create({
@@ -46,4 +46,4 @@ window.Echo = new Echo({
     }
   }
 })
-createApp(App).use(store).use(router).use(window.Echo).use(VueToast).mount('#app')
+createApp(App).use(store).use(router).use(window.Echo).mount('#app')

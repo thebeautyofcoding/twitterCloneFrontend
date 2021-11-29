@@ -1,14 +1,21 @@
 <template>
-  <div class="flex flex-col w-full vh-full">
-    <div class="w-full flex flex-col border-r-2 border-l-2 border-gray-200">
-      <div class="text-2xl font-bold border-b-2 border-gray-200 p-10">
-        Private Message
-      </div>
+  <div
+    class="
+      flex flex-col
+      w-full
+      vh-full
+      border-r-2 border-l-2 border-gray-200
+      shadow
+      rounded-xl
+    "
+  >
+    <div class="w-full flex flex-col">
+      <div class="text-2xl font-bold border-b-2 border-gray-200 p-10"></div>
     </div>
     <div class="flex justify-center align-items-center">
       <div class="flex w-full align-items-center">
         <div class="flex w-full align-items-center">
-          <ul class="w-2/4">
+          <!-- <ul class="w-2/4 m-3">
             <li
               v-if="chat"
               v-for="user in chat.users"
@@ -17,41 +24,53 @@
             >
               <div class="absolute w-full">
                 <img
-                  :src="'http://127.0.0.1:8000/api/profile/avatar/' + user.id"
+                  :src="endPoint + '/profile/avatar/' + user.id"
                   class="h-10 w-10 rounded-full border-4 border-white"
                 />
               </div>
             </li>
-          </ul>
+          </ul> -->
         </div>
-        <div class="flex align-items-center">
-          <div class="font-bold flex align-items-center"></div>
+        <div class="flex align-items-center p-3">
+          <div class="font-bold flex align-items-center">
+            {{ chat.chat_name }}
+          </div>
         </div>
       </div>
     </div>
 
     <div class="mt-5">
-      <ul class="flex flex-col message ml-5">
-        <div>
-          <li class="flex message justify-end">
-            <div class="">
-              {{ transformDate }}
+      <ul class="flex flex-col message ml-5" v-if="chat.messages">
+        <div v-for="message in chat.messages" :key="message.id">
+          <li
+            class="flex message justify-end"
+            v-if="message.sender.id === loggedInUser.id"
+          >
+            <div class="" v-if="message.sender.id === loggedInUser.id">
+              {{ transformDate(message) }}
             </div>
             <div
               class="flex text-white bg-blue-400 mb-1 rounded-l-full px-3 py-1"
-            ></div>
+            >
+              {{ message.content }}
+            </div>
           </li>
-          <li class="flex messagePartner justify-start">
+          <li
+            class="flex messagePartner justify-start"
+            v-if="message.sender.id !== loggedInUser.id"
+          >
             <div class="flex flex-col">
-              <div class="text-gray-400"></div>
+              <div class="text-gray-400">
+                {{ message.sender && message.sender.username }}
+              </div>
               <div class="">
-                {{ transformDate }}
+                {{ transformDate(message) }}
               </div>
               <div class="flex">
                 <div>
                   <img
                     class="rounded-full h-8 w-8 mr-2"
-                    :src="'http://127.0.0.1:8000/api/profile/avatar/'"
+                    :src="endPoint + '/profile/avatar/' + lastMessage.sender.id"
                   />
                 </div>
 
@@ -65,7 +84,9 @@
                     px-3
                     py-1
                   "
-                ></div>
+                >
+                  {{ message.content }}
+                </div>
               </div>
             </div>
           </li>
@@ -73,7 +94,7 @@
       </ul>
     </div>
 
-    <div class="flex justify-end flex-col h-full border-r-2 border-l-2">
+    <div class="flex justify-end flex-col h-full">
       <div class="flex flex-col justify-end align-items-center w-full mt-10">
         {{ typing }}
         <transition
@@ -116,37 +137,184 @@
   export default {
     name: "GroupChat",
     components: {
-      ChatInput
+      ChatInput,
     },
     data() {
       return {
+        chat: {},
         disabledbuttonColor: " text-gray-400",
         enabledColor: " text-blue-400",
         color: " text-gray-400",
-        message: null,
-        to: null
+        message: "",
+        loggedInUser: {},
+        latestPartnerMessage: {},
+        firstPartnerMessage: {},
+        typing: null,
+        newMessage: {},
+        messageSender: {},
+        receivedData: {},
+        setValueEmpty: false,
+        lastMessage: {},
+        lastMessageEvent: {},
+        joinedUser: {},
+        timeJoined: null,
+        joinedDate: {},
+        joinedTime: null,
+        usersInChatroom: null,
+        lastMessageDate: null,
+        from: null,
       };
     },
-
+    beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        vm.from = from;
+      });
+    },
     computed: {
-      // transformDate() {
-      //   var date = new Date(this.lastMessage.created_at);
-      //   return moment().to(date);
-      // },
-
       channel() {
         return window.Echo.channel("chat" + this.$route.params.id);
-      }
+      },
+      endPoint() {
+        return process.env.VUE_APP_API_ENDPOINT;
+      },
+
+      // leavingChannel() {
+      //   if (this.$route.params.id !== this.chat.id) console.log("leavingchannel");
+      //   return window.Echo.leave("joinedUsers" + this.$route.params.id);
+      // },
+      // IncomingUser() {
+      //   window.Echo.private("chat" + this.$route.params.id).listen(
+      //     "JoinedRoomEvent",
+      //     e => {
+      //       const current = new Date();
+      //       let time = current.getHours() + ":" + current.getMinutes();
+
+      //       const date =
+      //         current.getDay() +
+      //         "-" +
+      //         (current.getMonth() + 1) +
+      //         "-" +
+      //         current.getFullYear();
+      //       this.joinedTime = time;
+      //       this.joinedDate = date;
+      //       this.joinedUser = e.user;
+
+      //       return e.user;
+      //     }
+      //   );
+      // }
     },
+
+    // computed: {
+    //   ...mapState({
+    //     chat() {
+    //       return this.$store.state.chat.chat;
+    //     }
+    //   })
+    // },
+    messages() {},
 
     async created() {
       var loggedInUser = localStorage.getItem("user");
       loggedInUser = JSON.parse(loggedInUser);
       this.loggedInUser = loggedInUser;
+
+      const response = await this.$store.dispatch(
+        "getChat",
+        this.$route.params.id
+      );
+      this.chat = response.data.chat;
+      // all Users online in Room
+      // this.channel
+      //   .here(e => {
+      //     this.usersInChatroom = e;
+      //     console.log(this.usersInChatroom);
+      //   })
+      //   .joining(e => {
+      //     console.log("joining");
+      //     this.joinedUser = e.user;
+      //     this.usersInChatroom.push(e.user);
+      //     console.log(this.usersInChatroom);
+      //   })
+      //   .leaving(e => {
+      //     console.log("leaving");
+      //     console.log(e);
+      //   });
+      // this.channel.listen("JoinedRoomEvent", e => {
+      //   const current = new Date();
+      //   let time = current.getHours() + ":" + current.getMinutes();
+
+      //   const date =
+      //     current.getDay() +
+      //     "-" +
+      //     (current.getMonth() + 1) +
+      //     "-" +
+      //     current.getFullYear();
+      //   this.joinedTime = time;
+      //   this.joinedDate = date;
+      //   this.joinedUser = e.user;
+      // });
+      var partnerMessages = [];
+      this.chat.messages.filter((m, i) => {
+        m.sender_id !== this.loggedInUser.id ? partnerMessages.push(m) : null;
+        if (i === 0) {
+          this.firstPartnerMessage = this.chat.messages[i];
+        }
+      });
+      this.latestPartnerMessage = partnerMessages.pop();
+      var messages = [...this.chat.messages];
+      this.lastMessage = messages.pop();
+      // window.Echo.private("chat" + this.chat.id).listen(
+      //   "App\\Events\\MessageSentEvent",
+      //   e => {
+      //     console.log(e);
+      //   }
+      // );
+
+      window.Echo.private("chat" + this.chat.id).listen(
+        "MessageSentEvent",
+
+        (e) => {
+          var date = new Date().getTime();
+          this.lastMessageDate = moment().to(date);
+          this.lastMessage = e.message;
+
+          // if (e.message.sender.id !== this.loggedInUser.id)
+          // this.$store.dispatch("updateMessages", e.message);
+          this.chat.messages.push(e.message);
+        }
+      );
+      // this.$store.dispatch("updateMessages", e.message);
+      // window.Echo.private("chat" + this.chat.id).listenForWhisper("typing", e => {
+      //   if (e.name != "") {
+      //     console.log("bist du hier");
+      //     const timerLength = 2000;
+      //     const lastTypingTime = new Date().getTime();
+      //     setTimeout(() => {
+      //       const timeNow = new Date().getTime();
+      //       const timeDiff = timeNow - lastTypingTime;
+      //       console.log("HMMM");
+      //       if (timeDiff >= timerLength) {
+      //         console.log("HMMM");
+      //         this.typing = null;
+      //         this.$emit("typing", this.typing);
+      //       } else {
+      //         console.log("HMMM");
+      //         this.typing = "typing...";
+      //         this.$emit("typing", this.typing);
+      //       }
+      //     }, timerLength);
+      //   }
+      // });
     },
 
     methods: {
+      transformDate(message) {
+        var date = new Date(message.created_at);
+        return moment().to(date);
+      },
       onNoValue(e) {
+        console.log(e);
         if (!e.noValue) {
           this.$refs.messageButtonContainer.disabled = false;
           this.color = this.enabledColor;
@@ -157,18 +325,22 @@
         }
       },
       onTyping(e) {
+        console.log(e);
+        console.log(e);
         this.typing = e;
         this.setValueEmpty = false;
       },
 
       async sendMessage() {
         this.to = this.$route.params.id;
-        await this.$store.dispatch("sendPrivateMessage", {
+        const response = await this.$store.dispatch("sendPrivateMessage", {
           message: this.message,
-          to: this.to
+          to: this.to,
+          isGroupChat: false,
         });
-      }
-    }
+        this.chat = response.data.chat;
+      },
+    },
   };
 </script>
 

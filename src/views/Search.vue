@@ -1,5 +1,5 @@
 <template>
-  <div class="search flex flex-col w-full ml-20">
+  <div class="search flex flex-col w-full card rounded-xl p-3 shadow">
     <div><SearchBar /></div>
     <div class="flex flex-col">
       <PostReplyModal />
@@ -28,7 +28,7 @@
       UserResult,
       UserResultsList,
       PostsResultList,
-      PostReplyModal
+      PostReplyModal,
     },
     data() {
       return {};
@@ -50,6 +50,6 @@
       //   console.log("helgflg");
       //   this.inputBorderColor = "border-gray-100 ";
       // }
-    }
+    },
   };
 </script>

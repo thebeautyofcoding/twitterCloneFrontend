@@ -15,17 +15,19 @@
     data() {
       return {};
     },
+    methods: {},
     computed: {
       posts() {
         return this.$store.getters.getterPosts;
       },
       channel() {
         return window.Echo.private("posts");
-      }
+      },
     },
-
+    beforeMount() {},
     mounted() {
-      this.$store.dispatch("getPosts").then(response => {});
-    }
+      this.$store.dispatch("getPosts");
+    },
+    created() {},
   };
 </script>

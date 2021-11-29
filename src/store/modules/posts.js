@@ -250,13 +250,13 @@ const mutations = {
 const actions = {
 
   updatePostsViaEvent ({ commit }, post) {
-
     console.log(post)
+
     commit('setPostToPosts', post.post)
   },
   updatePostViaEvent ({ commit }, post) {
 
-    console.log(post)
+
     commit('updatePosts', post)
   },
 
@@ -296,7 +296,7 @@ const actions = {
 
 
   },
-  likePost ({ commit }, postId) {
+  likePost ({ commit, rootState }, postId) {
 
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_API_ENDPOINT}/posts/like`, { postId: postId }, {
@@ -309,7 +309,8 @@ const actions = {
           // commit('setLikedToPost', data)
 
           console.log(data.post)
-          commit('setPost', data.post)
+          // commit('setPost', data.post)
+          commit('updateSearchPosts', data.post, { root: true })
           commit('updatePosts', data.post)
           // commit('setPosts', data.post)
 
@@ -347,6 +348,7 @@ const actions = {
     })
   },
   retweetPostByEvent ({ commit }, data) {
+
     commit('updatePosts', data)
     commit('setPost', data.post)
   },
@@ -358,11 +360,13 @@ const actions = {
         }
       }).then(({ data, status }) => {
         if (status === 201) {
+          commit('updateSearchPosts', data.post, { root: true })
           commit('updatePosts', data.post)
           commit('updatePost', data.post)
           commit('setPost', data.post)
           resolve(data.post)
         } else {
+          commit('updateSearchPosts', data.post, { root: true })
           commit('updatePosts', data.post)
           commit('setPost', data.post)
           commit('updatePost', data.post)

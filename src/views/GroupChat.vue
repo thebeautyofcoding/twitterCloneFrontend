@@ -1,6 +1,15 @@
 <template>
-  <div class="flex flex-col w-full vh-full">
-    <div class="w-full flex flex-col border-r-2 border-l-2 border-gray-200">
+  <div
+    class="
+      flex flex-col
+      w-full
+      vh-full
+      border-r-2 border-l-2 border-gray-200
+      shadow
+      rounded-xl
+    "
+  >
+    <div class="w-full flex flex-col">
       <div class="text-2xl font-bold border-b-2 border-gray-200 p-10">
         {{ chat.isGroupChat ? "Group Chat" : "Private Chat" }}
       </div>
@@ -8,7 +17,7 @@
     <div class="flex justify-center align-items-center">
       <div class="flex w-full align-items-center">
         <div class="flex w-full align-items-center">
-          <ul class="w-2/4">
+          <ul class="w-2/4 m-3">
             <li
               v-if="chat"
               v-for="user in chat.users"
@@ -24,7 +33,7 @@
             </li>
           </ul>
         </div>
-        <div class="flex align-items-center">
+        <div class="flex align-items-center p-3">
           <div class="font-bold flex align-items-center">
             {{ chat.chat_name }}
           </div>
@@ -39,14 +48,8 @@
             class="flex message justify-end"
             v-if="message.sender.id === loggedInUser.id"
           >
-            <div
-              class=""
-              v-if="
-                lastMessage.id === message.id &&
-                message.sender.id === loggedInUser.id
-              "
-            >
-              {{ transformDate }}
+            <div class="" v-if="message.sender.id === loggedInUser.id">
+              {{ transformDate(message) }}
             </div>
             <div
               class="flex text-white bg-blue-400 mb-1 rounded-l-full px-3 py-1"
@@ -59,20 +62,17 @@
             v-if="message.sender.id !== loggedInUser.id"
           >
             <div class="flex flex-col">
-              <div
-                class="text-gray-400"
-                v-if="firstPartnerMessage.id == message.id"
-              >
+              <div class="text-gray-400">
                 {{ message.sender && message.sender.username }}
               </div>
-              <div class="" v-if="lastMessage.id === message.id">
-                {{ transformDate }}
+              <div class="">
+                {{ transformDate(message) }}
               </div>
               <div class="flex">
-                <div v-if="lastMessage.id === message.id">
+                <div>
                   <img
                     class="rounded-full h-8 w-8 mr-2"
-                    :src="endPoint + '/' + lastMessage.sender.id"
+                    :src="endPoint + '/profile/avatar/' + lastMessage.sender.id"
                   />
                 </div>
 
@@ -96,7 +96,7 @@
       </ul>
     </div>
 
-    <div class="flex justify-end flex-col h-full border-r-2 border-l-2">
+    <div class="flex justify-end flex-col h-full">
       <div class="flex flex-col justify-end align-items-center w-full mt-10">
         {{ typing }}
         <transition
@@ -139,7 +139,7 @@
   export default {
     name: "GroupChat",
     components: {
-      ChatInput
+      ChatInput,
     },
     data() {
       return {
@@ -164,26 +164,21 @@
         joinedTime: null,
         usersInChatroom: null,
         lastMessageDate: null,
-        from: null
+        from: null,
       };
     },
     beforeRouteEnter(to, from, next) {
-      next(vm => {
+      next((vm) => {
         vm.from = from;
       });
     },
     computed: {
-      transformDate() {
-        var date = new Date(this.lastMessage.created_at);
-        return moment().to(date);
-      },
-
       channel() {
         return window.Echo.channel("chat" + this.$route.params.id);
       },
       endPoint() {
         return process.env.VUE_APP_API_ENDPOINT;
-      }
+      },
 
       // leavingChannel() {
       //   if (this.$route.params.id !== this.chat.id) console.log("leavingchannel");
@@ -280,7 +275,7 @@
       window.Echo.private("chat" + this.chat.id).listen(
         "MessageSentEvent",
 
-        e => {
+        (e) => {
           var date = new Date().getTime();
           this.lastMessageDate = moment().to(date);
           this.lastMessage = e.message;
@@ -315,6 +310,11 @@
     },
 
     methods: {
+      transformDate(message) {
+        console.log(message);
+        var date = new Date(message.created_at);
+        return moment().to(date);
+      },
       onNoValue(e) {
         console.log(e);
         if (!e.noValue) {
@@ -328,6 +328,7 @@
       },
       onTyping(e) {
         console.log(e);
+        console.log(e);
         this.typing = e;
         this.setValueEmpty = false;
       },
@@ -335,10 +336,10 @@
       async sendMessage() {
         await this.$store.dispatch("sendMessage", {
           message: this.message,
-          chatId: this.chat.id
+          chatId: this.chat.id,
         });
-      }
-    }
+      },
+    },
   };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="home w-full">
+  <div class="home w-full shadow">
     <Home />
   </div>
 </template>
@@ -11,7 +11,7 @@
   export default {
     name: "HomeView",
     components: {
-      Home
-    }
+      Home,
+    },
   };
 </script>

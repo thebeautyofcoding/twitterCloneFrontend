@@ -17,7 +17,8 @@
     "bootstrap": "^5.1.3",
     "core-js": "^3.6.5",
     "cropperjs": "^1.5.12",
-    "express": "^4.17.1",
+    "element-plus": "^1.2.0-beta.3",
+
     "install": "^0.13.0",
     "laravel-echo": "^1.11.3",
     "moment": "^2.29.1",
@@ -29,12 +30,11 @@
     "vue-animate": "^0.0.4",
     "vue-echo-laravel": "^0.1.0",
     "vue-events": "^3.1.0",
+    "vue-infinite-loading": "^2.4.5",
     "vue-lodash": "^2.1.2",
     "vue-material-design-icons": "^4.13.0",
     "vue-moments-ago": "^0.2.0",
     "vue-router": "^4.0.0-0",
-    "vue-toast-notification": "^2.0.1",
-    "vue-toasted": "^1.1.28",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
@@ -47,7 +47,6 @@
     "autoprefixer": "^9.8.8",
     "postcss": "^7.0.39",
     "sass-loader": "^8.0.2",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.16",
-    "vue-cli-plugin-vuetify": "~2.4.3"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.16"
   }
 }

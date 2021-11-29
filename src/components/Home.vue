@@ -74,7 +74,7 @@
     components: {
       PostReplyModal,
       SinglePost,
-      SinglePostList
+      SinglePostList,
     },
 
     data() {
@@ -99,21 +99,21 @@
         replied: false,
         showReplyModal: false,
         showSpinner: true,
-        replyModal: false
+        replyModal: false,
       };
     },
 
     updated() {},
-    beforeMounted() {},
+    beforeMount() {},
     updated() {},
     created() {},
     computed: {
       channel() {
         return window.Echo.private("posts");
-      }
+      },
     },
     mounted() {
-      this.channel.listen("PostPostedEvent", e => {
+      this.channel.listen("PostPostedEvent", (e) => {
         // this.$store.dispatch("updatePostsViaEvent", e);
 
         if (this.loggedInUser.id !== e.post.user_id_posted_by.id)
@@ -146,7 +146,7 @@
         this.postToPutInModal = null;
       },
 
-      submitHandler: async function() {
+      submitHandler: async function () {
         await this.$store.dispatch("addPostToPosts", this.value);
 
         // await this.$store.dispatch("updatePostsViaEvent", e);
@@ -160,19 +160,19 @@
       //     return post;
       //   });
       // },
-      postDeleteHandler: function(id) {
+      postDeleteHandler: function (id) {
         console.log(id);
         axios
           .delete(`${process.env.VUE_APP_API_ENDPOINT}/delete/posts/${id}`, {
-            content: this.value
+            content: this.value,
           })
-          .then(response => {
+          .then((response) => {
             console.log(response);
             if (response.data.deleted === true)
               return document.getElementById(id).remove();
           });
-      }
-    }
+      },
+    },
   };
 </script>
 

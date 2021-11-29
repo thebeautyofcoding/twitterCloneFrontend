@@ -51,7 +51,7 @@
     <div v-if="active" class="modal-backdrop fade show"></div>
 
     <div
-      class="flex flex-col border-r-2 border-gray-200 w-full border-l-2"
+      class="flex flex-col border-r-2 border-gray-200 w-full border-l-2 shadow"
       style="margin: 0; padding: 0"
     >
       <div class="h-20 border-b-2 border-gray-600 w-full">
@@ -151,7 +151,8 @@
         </div>
         <div class="flex justify-end">
           <router-link
-            :to="'/private-messages/' + profileUser.id"
+            @click="onClick"
+            :to="'/private-messages/' + profileUser.username"
             class="
               bg-black
               h-10
@@ -196,6 +197,9 @@
       </Tabs>
     </div>
   </div>
+  <div v-if="noUser" class="font-bold text-2xl justify-center">
+    This user is not in our database!
+  </div>
 </template>
 
 
@@ -214,7 +218,7 @@
       SinglePostList,
       PostReplyModal,
       ImageCropper,
-      SinglePostRepliesList
+      SinglePostRepliesList,
     },
     data() {
       return {
@@ -225,7 +229,8 @@
         avatar: null,
         rand: 1,
         profileUser: null,
-        myProfile: false
+        myProfile: false,
+        noUser: false,
       };
     },
     computed: {
@@ -235,10 +240,10 @@
           this.$route.params.username ===
           this.$store.state.currentUser.currentUser.username
         );
-      }
+      },
     },
 
-    async mounted() {
+    async created() {
       // this.loggedInUser = localStorage.getItem("user");
       // this.loggedInUser = JSON.parse(this.loggedInUser);
 
@@ -246,11 +251,17 @@
         "getProfileUser",
         this.$route.params.username
       );
+
       // if (this.$route.params.username == this.loggedInUser.username) {
       //   this.isLoggedInUsersProfile = true;
       // } else {
       //   this.isLoggedInUsersProfile = false;
       // }
+    },
+    mounted() {
+      if (!this.profileUser) {
+        this.noUser = true;
+      }
     },
 
     methods: {
@@ -278,7 +289,13 @@
         );
         console.log(response);
         this.avatar = response;
-      }
-    }
+      },
+      // async onClick() {
+      //   await this.$store.dispatch(
+      //     "checkIfUserExists",
+      //     this.$route.params.username
+      //   );
+      // },
+    },
   };
 </script>
