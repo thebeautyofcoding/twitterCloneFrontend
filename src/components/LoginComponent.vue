@@ -66,26 +66,26 @@
       async login() {
         this.errors.email = null;
         this.errors.password = null;
-        await this.$store.dispatch("loginUser", this.user).catch((err) => {
-          this.submitted = true;
+        const response = await this.$store
+          .dispatch("loginUser", this.user)
+          .catch((err) => {
+            this.submitted = true;
 
-          if (err.response.data.errors && err.response.data.errors.email) {
-            this.errors.email = err.response.data.errors.email[0];
-          }
-          if (err.response.data.errors && err.response.data.errors.password)
-            this.errors.password = err.response.data.errors.password[0];
-          if (err.response.data.email) {
-            this.errors.email = err.response.data.email;
-          }
-          if (err.response.data.password) {
-            this.errors.password = err.response.data.password;
-          }
-        });
+            if (err.response.data.errors && err.response.data.errors.email) {
+              this.errors.email = err.response.data.errors.email[0];
+            }
+            if (err.response.data.errors && err.response.data.errors.password)
+              this.errors.password = err.response.data.errors.password[0];
+            if (err.response.data.email) {
+              this.errors.email = err.response.data.email;
+            }
+            if (err.response.data.password) {
+              this.errors.password = err.response.data.password;
+            }
+          });
+        console.log(response);
         this.$store.dispatch("setLoggedInUserAction", this.user);
-
-        if (err.response.data && err.response.data.errors) {
-          this.$router.push("/");
-        }
+        if (response) this.$router.push("/");
       },
     },
   };

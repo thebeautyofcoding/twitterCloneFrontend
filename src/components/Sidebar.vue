@@ -268,10 +268,11 @@
       async logoutHandler() {
         const token = localStorage.getItem("token");
 
-        await this.$store.dispatch("currentUser/logout", token);
+        await this.$store.dispatch("logout", token);
 
         localStorage.setItem("user", null);
         localStorage.setItem("token", null);
+        this.$router.push("/");
       },
     },
     data() {

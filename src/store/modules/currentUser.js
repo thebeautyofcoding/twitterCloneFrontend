@@ -2,7 +2,8 @@
 import axios from 'axios'
 
 const state = {
-  currentUser: JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : null
+  currentUser: JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : null,
+  token: ''
 }
 const getters = {
   getCurrentUser: function (state) {
@@ -12,6 +13,10 @@ const getters = {
 }
 const mutations =
 {
+  setCurrentToken (state, token) {
+    state.token = token
+
+  },
   setCurrentUser: function (state, user) {
     state.currentUser = user
   }
@@ -24,7 +29,7 @@ const actions = {
     console.log(process.env.VUE_APP_API_ENDPOINT)
 
 
-    const response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/login`, {
+    const response = await window.apiClient.post(`${process.env.VUE_APP_API_ENDPOINT}/login`, {
       email: user.email,
       password: user.password
     })
@@ -33,6 +38,7 @@ const actions = {
     if (response.data.token) {
       localStorage.setItem('user', response.data.user)
       commit('setCurrentUser', response.data.user)
+      commit('setCurrentToken', response.data.token)
       localStorage.setItem('token', response.data.token)
       const userStringified = JSON.stringify(response.data.user)
       localStorage.setItem('user', userStringified)

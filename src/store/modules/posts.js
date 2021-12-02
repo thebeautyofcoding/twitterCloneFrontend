@@ -6,10 +6,12 @@ var state = {
   post: {},
   loggedInUser: {},
   posts: [],
-  replies: []
+  replies: [],
+
+
 
 }
-const token = localStorage.getItem('token')
+
 const getters = {
   getterPosts: state => {
 
@@ -262,13 +264,13 @@ const actions = {
 
 
 
-  async getProfileUser ({ commit }, username) {
+  async getProfileUser ({ commit, rootState }, username) {
 
 
     const response = await axios(`${process.env.VUE_APP_API_ENDPOINT}/profile/${username}`,
       {
         headers: {
-          Authorization: 'Bearer ' + token
+          Authorization: 'Bearer ' + rootState.currentUser.token
         }
       })
     return response.data.user
@@ -281,12 +283,13 @@ const actions = {
 
     commit('setLoggedInUser', user)
   },
-  async getPosts ({ commit }) {
-
+  async getPosts ({ commit, rootState }) {
+    const token1 = localStorage.getItem('token')
+    console.log(token1)
     const response = await axios(`${process.env.VUE_APP_API_ENDPOINT}/posts`,
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + rootState.currentUser.token,
           'Accept': ' application/json'
         }
       })
@@ -301,7 +304,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_API_ENDPOINT}/posts/like`, { postId: postId }, {
         headers: {
-          Authorization: 'Bearer ' + token
+          Authorization: 'Bearer ' + rootState.currentUser.token
         }
       }).then(({ data, status }) => {
         if (status === 200) {
@@ -326,11 +329,11 @@ const actions = {
     })
   },
 
-  getPostsByUsername ({ commit }) {
+  getPostsByUsername ({ commit, rootState }) {
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_API_ENDPOINT}/profile/posts/bluemotion86`, {
         headers: {
-          Authorization: 'Bearer ' + token
+          Authorization: 'Bearer ' + rootState.currentUser.token
         }
       }).then(({ data, status }) => {
         // if (status === 201) {
@@ -352,11 +355,11 @@ const actions = {
     commit('updatePosts', data)
     commit('setPost', data.post)
   },
-  retweetPost ({ commit }, postId) {
+  retweetPost ({ commit, rootState }, postId) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_API_ENDPOINT}/posts/retweet`, { postId: postId }, {
         headers: {
-          Authorization: 'Bearer ' + token
+          Authorization: 'Bearer ' + rootState.currentUser.token
         }
       }).then(({ data, status }) => {
         if (status === 201) {
@@ -377,12 +380,12 @@ const actions = {
       }).catch(err => reject(err))
     })
   },
-  getPostByIdAction ({ commit }, postId) {
+  getPostByIdAction ({ commit, rootState }, postId) {
 
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_API_ENDPOINT}/posts/${postId}`, {
         headers: {
-          Authorization: 'Bearer ' + token
+          Authorization: 'Bearer ' + rootState.currentUser.token
         }
       }).then(({ status, data }) => {
         if (status === 200) {
@@ -398,11 +401,11 @@ const actions = {
     // commit('updateReplyToPost', data)
   },
 
-  replyToPost ({ commit }, reply) {
+  replyToPost ({ commit, rootState }, reply) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_API_ENDPOINT}/posts/reply`, { reply: reply }, {
         headers: {
-          Authorization: 'Bearer ' + token
+          Authorization: 'Bearer ' + rootState.currentUser.token
         }
       }).then(({ data, status }) => {
 
@@ -417,11 +420,11 @@ const actions = {
       }).catch(err => reject(err))
     })
   },
-  async getRepliesOfPost ({ commit }, postId) {
+  async getRepliesOfPost ({ commit, rootState }, postId) {
 
     var response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/posts/replies/${postId}`, {
       headers: {
-        Authorization: 'Bearer ' + token
+        Authorization: 'Bearer ' + rootState.currentUser.token
       }
     })
 
@@ -434,7 +437,7 @@ const actions = {
 
 
   },
-  addPostToPosts ({ commit }, value) {
+  addPostToPosts ({ commit, rootState }, value) {
     var token = localStorage.getItem("token")
     var user = localStorage.getItem(('user'))
     user = JSON.parse(user)
@@ -445,7 +448,7 @@ const actions = {
         { content: value },
         {
           headers: {
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + rootState.currentUser.token,
 
           }
         }
@@ -456,11 +459,11 @@ const actions = {
       })
   },
 
-  getPostsWithAllReplies ({ commit }) {
+  getPostsWithAllReplies ({ commit, rootState }) {
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_API_ENDPOINT}/posts`, {
         headers: {
-          Authorization: 'Bearer ' + token
+          Authorization: 'Bearer ' + rootState.currentUser.token
         }
       }).then(({ data, status }) => {
 
@@ -480,10 +483,10 @@ const actions = {
 
   },
 
-  async getReplies ({ commit }, username) {
+  async getReplies ({ commit, rootState }, username) {
     const res = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/replies/${username}`, {
       headers: {
-        Authorization: 'Bearer ' + token
+        Authorization: 'Bearer ' + rootState.currentUser.token
       }
     })
     // commit('setReplies', res.data.replies)
