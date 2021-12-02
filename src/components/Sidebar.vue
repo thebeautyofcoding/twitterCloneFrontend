@@ -248,8 +248,10 @@
             </div></router-link
           >
         </li>
-        <li>
-          <router-link @click="logoutHandler" to="/logout">Logout</router-link>
+        <li class="ml-5 flex justify-center">
+          <router-link @click="logoutHandler" to="/logout" class="font-bold"
+            >Logout</router-link
+          >
         </li>
       </ul>
     </nav>

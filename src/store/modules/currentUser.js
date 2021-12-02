@@ -62,6 +62,7 @@ const actions = {
         if (status === 200) {
           localStorage.removeItem('token')
           commit('setCurrentUser', null)
+          commit('setCurrentToken', '')
           resolve(true)
         }
       })
@@ -70,7 +71,7 @@ const actions = {
         })
     })
   },
-  registerUser ({ commit }, user) {
+  registerUser ({ commit, state }, user) {
 
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_API_ENDPOINT}/register`, {
@@ -89,6 +90,7 @@ const actions = {
 
         if (status === 201) {
           console.log(data.user)
+          commit('setCurrentToken', data.token)
           localStorage.setItem('token', data.token)
           const userStringified = JSON.stringify(data.user)
           localStorage.setItem('user', userStringified)

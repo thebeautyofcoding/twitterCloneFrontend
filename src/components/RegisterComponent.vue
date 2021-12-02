@@ -169,7 +169,7 @@
           .dispatch("registerUser", this.user)
           .then((success) => {
             this.submitted = true;
-            console.log(success);
+            this.$router.push("/");
           })
           .catch((err) => {
             this.submitted = true;
@@ -195,9 +195,6 @@
             if (err.response.data.password) {
               this.errors.password = err.response.data.password;
             }
-
-            if (!err.response.data.errors && err.response.data)
-              this.$router.push("/");
           });
       },
     },
