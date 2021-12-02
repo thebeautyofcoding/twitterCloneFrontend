@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const state = {
   currentUser: JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : null,
-  token: ''
+  token: localStorage.getItem('token')
 }
 const getters = {
   getCurrentUser: function (state) {
