@@ -1,7 +1,7 @@
 <template>
-  <div class="w-min-100 m-3" v-if="loggedInUser">
+  <div class="w-min-50" v-if="loggedInUser">
     <nav style="padding: 0; margin: 0" id="">
-      <div class="w-10 h-10 my-14 mx-8">
+      <div class="w-10 h-10 my-14 mr-4">
         <div
           class="
             rounded-full
@@ -32,7 +32,7 @@
         <li class="">
           <router-link to="/">
             <div class="d-flex">
-              <div class="w-10 h-10 my-14 mx-8">
+              <div class="w-10 h-10 my-14 mr-4">
                 <div
                   class="
                     rounded-full
@@ -83,7 +83,7 @@
         <li>
           <router-link to="/search/">
             <div class="d-flex">
-              <div class="w-10 h-10 my-14 mx-8">
+              <div class="w-10 h-10 my-14 mr-4">
                 <div
                   class="
                     rounded-full
@@ -125,7 +125,7 @@
         <li>
           <router-link to="/notifications/">
             <div class="d-flex">
-              <div class="w-10 h-10 my-14 mx-8">
+              <div class="w-10 h-10 my-14 mr-4">
                 <div
                   class="
                     rounded-full
@@ -167,7 +167,7 @@
         <li>
           <router-link to="/messages/">
             <div class="d-flex">
-              <div class="w-10 h-10 my-14 mx-8">
+              <div class="w-10 h-10 my-14 mr-4">
                 <div
                   class="
                     rounded-full
@@ -209,7 +209,7 @@
         <li>
           <router-link :to="`/profile/` + loggedInUser.username">
             <div class="d-flex">
-              <div class="w-10 h-10 my-14 mx-8">
+              <div class="w-10 h-10 my-14 mr-4">
                 <div
                   class="
                     rounded-full

@@ -132,7 +132,7 @@
 
 <script>
   import moment from "moment";
-  import { mapState } from "vuex";
+
   import ChatInput from "../components/ChatInput.vue";
   export default {
     name: "GroupChat",
@@ -214,7 +214,7 @@
     // },
     messages() {},
 
-    async created() {
+    async mounted() {
       var loggedInUser = localStorage.getItem("user");
       loggedInUser = JSON.parse(loggedInUser);
       this.loggedInUser = loggedInUser;
@@ -275,6 +275,7 @@
         "MessageSentEvent",
 
         (e) => {
+          console.log("MESSAGESENTEVENT FIRED");
           var date = new Date().getTime();
           this.lastMessageDate = moment().to(date);
           this.lastMessage = e.message;

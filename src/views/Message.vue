@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full shadow">
+  <div class="flex flex-col vh-100 shadow">
     <div
       class="border-r-2 border-l-2 border-gray-200 border-solid flex border-b-2"
     >
@@ -40,7 +40,6 @@
 </script>
 
 <style  scoped>
-
 /* .images2Pics:first-child {
   left: 20;
 

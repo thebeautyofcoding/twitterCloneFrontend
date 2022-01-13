@@ -1,5 +1,5 @@
 <template>
-  <ul class="vh-100">
+  <ul class="min-h-full max-vw-90">
     <li v-for="post in posts" :id="post && post.id" :key="post && post.id">
       <SinglePost :post="post" />
     </li>

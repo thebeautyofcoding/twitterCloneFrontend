@@ -1,9 +1,12 @@
 <template>
   <div class="wrapper">
-    <div class="row flex w-full">
-      <div class="flex w-full">
-        <div class="flex mr-3 col-lg-4 col-md-3 col-sm-3"><Sidebar /></div>
-        <div class="col-md-7">
+    <div class="row flex">
+      <div class="flex">
+        <div class="flex col-lg-2 col-md-2 col-sm-1 mr-2"><Sidebar /></div>
+        <div
+          class="col-md-10 col-sm-10 min-vw-70 col-lg-10"
+          style="min-width: 80vw"
+        >
           <router-view></router-view>
         </div>
       </div>

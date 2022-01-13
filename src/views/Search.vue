@@ -1,5 +1,5 @@
 <template>
-  <div class="search flex flex-col w-full card rounded-xl p-3 shadow">
+  <div class="search flex flex-col vh-100 card rounded-xl p-3 shadow">
     <div><SearchBar /></div>
     <div class="flex flex-col">
       <PostReplyModal />
