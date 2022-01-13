@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const token = localStorage.getItem('token')
+
 const state = {
   searchResults: [],
   postsResults: [],
@@ -65,23 +65,23 @@ const mutations = {
   }
 }
 const actions = {
-  setSearchQueryAction ({ commit }, query) {
+  setSearchQueryAction ({ commit, rootState }, query) {
     commit('setSearchQuery', query)
   },
-  setActivePostsTabAction ({ commit }, trueOrFalse) {
+  setActivePostsTabAction ({ commit, rootState }, trueOrFalse) {
     commit('setActivePostsTabMutation', trueOrFalse)
   },
-  setActiveUsersTabAction ({ commit }, trueOrFalse) {
+  setActiveUsersTabAction ({ commit, rootState }, trueOrFalse) {
     commit('setActiveUsersTabMutation', trueOrFalse)
   },
 
-  async searchUsers ({ commit }, value) {
+  async searchUsers ({ commit, rootState }, value) {
     console.log(value)
 
-    console.log(token)
+    console.log(rootState.currentUser.token)
     var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/search/users`, { value: value }, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
       }
     })
@@ -94,12 +94,12 @@ const actions = {
 
   },
 
-  async searchPosts ({ commit }, value) {
+  async searchPosts ({ commit, rootState }, value) {
 
 
     var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/search/posts`, { value: value }, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
       }
     })

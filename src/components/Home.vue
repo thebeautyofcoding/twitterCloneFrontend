@@ -109,7 +109,7 @@
     created() {},
     computed: {
       channel() {
-        return window.Echo.private("posts");
+        return window.Echo && window.Echo.private("posts");
       },
     },
     mounted() {

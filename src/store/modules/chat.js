@@ -1,7 +1,6 @@
 import axios from "axios"
 var loggedInUser = localStorage.getItem('user')
-var token = localStorage.getItem('token')
-var token = localStorage.getItem('token')
+
 loggedInUser = JSON.parse(loggedInUser)
 
 
@@ -111,10 +110,10 @@ const actions = {
 
     commit('deleteOneConversationPartner', partner)
   },
-  async createChat ({ commit }, chatUsers) {
+  async createChat ({ commit, rootState }, chatUsers) {
     var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/messages/new`, { chatUsers: chatUsers }, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
 
       },
@@ -137,11 +136,11 @@ const actions = {
   },
 
 
-  async getChats ({ commit }) {
+  async getChats ({ commit, rootState }) {
 
     var response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/messages`, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
 
       },
@@ -153,10 +152,10 @@ const actions = {
   },
 
 
-  async getChatById ({ commit }, id) {
+  async getChatById ({ commit, rootState }, id) {
     var response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/messages/${id}`, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
 
       },
@@ -166,12 +165,12 @@ const actions = {
     return response.data.chat
   },
 
-  async sendMessage ({ commit }, data) {
+  async sendMessage ({ commit, rootState }, data) {
     window.apiClient.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId()
 
     var response = await window.apiClient.post(`${process.env.VUE_APP_API_ENDPOINT}/messages`, data, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
         'Access-Control-Allow-Origin': '*',
 
@@ -185,12 +184,12 @@ const actions = {
     return response.data.message
   },
 
-  async sendPrivateMessage ({ commit }, data) {
+  async sendPrivateMessage ({ commit, rootState }, data) {
     window.apiClient.defaults.headers.common['X-Socket-Id'] = window.Echo.socketId()
 
     var response = await window.apiClient.post(`${process.env.VUE_APP_API_ENDPOINT}/private-messages`, data, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
         'Access-Control-Allow-Origin': '*',
 

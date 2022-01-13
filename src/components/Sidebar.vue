@@ -262,10 +262,12 @@
   import axios from "axios";
   import { mapState } from "vuex";
   export default {
-    ...mapState({
-      loggedInUser: (state) => state.currentUser.currentUser,
-    }),
     name: "Sidebar",
+    computed: {
+      loggedInUser() {
+        return this.$store.state.currentUser.currentUser;
+      },
+    },
     methods: {
       async logoutHandler() {
         const token = localStorage.getItem("token");
@@ -278,13 +280,10 @@
       },
     },
     data() {
-      return {
-        loggedInUser: {},
-      };
+      return {};
     },
     mounted() {
-      this.loggedInUser = localStorage.getItem("user");
-      this.loggedInUser = JSON.parse(this.loggedInUser);
+      this.loggedInUser = JSON.parse(localStorage.getItem("user"));
     },
   };
 </script>

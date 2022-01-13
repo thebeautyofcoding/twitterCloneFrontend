@@ -1,14 +1,15 @@
 
 import axios from 'axios'
-const token = localStorage.getItem('token')
+
 const state = {
-  chat: {}
+  chat: {},
+  showUpdateDialog: false
 }
 const actions = {
-  async getChat ({ commit }, username) {
+  async getChat ({ commit, rootState }, username) {
     const response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/private-messages/${username}`, {
       headers: {
-        Authorization: 'Bearer ' + token
+        Authorization: 'Bearer ' + rootState.currentUser.token
       }
     })
     commit('setChat', response.data.chat)
@@ -21,6 +22,10 @@ const mutations = {
   setChat (state, chat) {
     state.chat = chat
 
+  },
+
+  setShowUpdateDialog ({ commit }, visibility) {
+    return state.showUpdateDialog = visibility
   }
 }
 const getters = {}

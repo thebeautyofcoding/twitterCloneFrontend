@@ -1,7 +1,6 @@
 import axios from "axios"
 var loggedInUser = localStorage.getItem('user')
-var token = localStorage.getItem('token')
-var token = localStorage.getItem('token')
+
 loggedInUser = JSON.parse(loggedInUser)
 
 const state = {
@@ -34,7 +33,7 @@ const actions = {
   async followOrUnfollow ({ commit }, userId) {
     var response = await axios.post(`${process.env.VUE_APP_API_ENDPOINT}/followers/${userId}`, {}, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
 
       }
@@ -47,7 +46,7 @@ const actions = {
   async getFollowing ({ commit }, username) {
     var response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/profile/following/${username}`, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
 
       }
@@ -59,7 +58,7 @@ const actions = {
   async getFollowers ({ commit }, username) {
     var response = await axios.get(`${process.env.VUE_APP_API_ENDPOINT}/profile/followers/${username}`, {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + rootState.currentUser.token,
 
 
       }

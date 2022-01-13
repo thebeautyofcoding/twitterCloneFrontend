@@ -172,8 +172,8 @@
       <PostReplyModal />
       <div v-if="isLoggedInUsersProfile">
         <div class="flex justify-end mr-4">
-          <router-link
-            to="/messages/"
+          <button
+            @click="setShowUpdateDialog"
             class="
               bg-black
               h-10
@@ -186,8 +186,9 @@
               align-items-center
               text-white
             "
-            >Edit</router-link
           >
+            Edit
+          </button>
         </div>
       </div>
 
@@ -200,6 +201,7 @@
   <div v-if="noUser" class="font-bold text-2xl justify-center">
     This user is not in our database!
   </div>
+  <UpdateModal :modalActive="modalActive"></UpdateModal>
 </template>
 
 
@@ -210,6 +212,7 @@
   import PostReplyModal from "../components/PostReplyModal.vue";
   import ImageCropper from "../components/ImageCropper.vue";
   import SinglePostRepliesList from "../components/SinglePostRepliesList";
+  import UpdateModal from "../components/UpdateModal";
   export default {
     name: "Profile",
     components: {
@@ -219,6 +222,7 @@
       PostReplyModal,
       ImageCropper,
       SinglePostRepliesList,
+      UpdateModal,
     },
     data() {
       return {
@@ -230,10 +234,15 @@
         rand: 1,
         profileUser: null,
         myProfile: false,
-        noUser: false,
       };
     },
     computed: {
+      noUser() {
+        return this.profileUser === null;
+      },
+      modalActive() {
+        return this.$store.state.profile.showUpdateDialog;
+      },
       isLoggedInUsersProfile() {
         console.log(this.loggedInUser);
         return (
@@ -243,7 +252,7 @@
       },
     },
 
-    async created() {
+    async mounted() {
       // this.loggedInUser = localStorage.getItem("user");
       // this.loggedInUser = JSON.parse(this.loggedInUser);
 
@@ -257,11 +266,6 @@
       // } else {
       //   this.isLoggedInUsersProfile = false;
       // }
-    },
-    mounted() {
-      if (!this.profileUser) {
-        this.noUser = true;
-      }
     },
 
     methods: {
@@ -281,6 +285,9 @@
         body.classList.remove("modal-open");
         this.active = false;
         this.show = false;
+      },
+      setShowUpdateDialog() {
+        this.$store.commit("setShowUpdateDialog", true);
       },
       async uploadProfileAvatar() {
         var response = await this.$store.dispatch(
