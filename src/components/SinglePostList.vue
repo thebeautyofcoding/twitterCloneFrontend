@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul class="vh-100">
     <li v-for="post in posts" :id="post && post.id" :key="post && post.id">
       <SinglePost :post="post" />
     </li>
